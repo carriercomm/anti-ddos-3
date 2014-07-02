@@ -4,76 +4,176 @@
 	xmlns:client="http://www.protogeni.net/resources/rspec/ext/client/1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://www.protogeni.net/resources/rspec/2">
-  <node client_id="outside" exclusive="false">
+  <node client_id="client" exclusive="false">
     <sliver_type name="emulab-xen">
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
     <services>
-      <execute command="sudo bash /tmp/of-setup/outside-setup" shell="bash"/>
-      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/of-setup.tar.gz"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
     </services>
-    <interface client_id="outside:switch">
-      <ip address="10.10.10.2" netmask="255.255.255.0" type="ipv4"/>
+    <interface client_id="cl:if0">
+      <ip address="10.10.14.2" netmask="255.255.255.0" type="ipv4"/>
     </interface>
     <flack:node_info x="100" y="400" unbound="true"/>
   </node>
-  <node client_id="switch" exclusive="false">
+  <node client_id="malicious1" exclusive="false">
+    <sliver_type name="emulab-xen">
+      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="m1:if0">
+      <ip address="10.10.14.3" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="200" y="600" unbound="true"/>
+  </node>
+  <node client_id="controller1" exclusive="false">
+    <sliver_type name="emulab-xen">
+      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="ctr1:if0">
+      <ip address="10.10.14.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="ctr1:if1">
+      <ip address="10.10.13.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="300" y="400" unbound="true"/>
+  </node>
+  <node client_id="malicious2" exclusive="false">
+    <sliver_type name="emulab-xen">
+      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
+    </sliver_type>
+    <interface client_id="m2:if0">
+      <ip address="10.10.13.3" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="400" y="200" unbound="true"/>
+  </node>
+  <node client_id="switch1" exclusive="false">
     <sliver_type name="emulab-xen">
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-OVS"/>
     </sliver_type>
     <services>
-      <execute command="sudo bash /tmp/of-setup/switch-setup" shell="bash"/>
-      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/of-setup.tar.gz"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/switch-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
     </services>
-    <interface client_id="switch:outside">
+    <interface client_id="s1:if0">
+      <ip address="192.168.130.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="s1:if1">
       <ip address="192.168.129.1" netmask="255.255.255.0" type="ipv4"/>
     </interface>
-    <interface client_id="switch:router">
+    <interface client_id="s1:if2">
       <ip address="192.168.128.1" netmask="255.255.255.0" type="ipv4"/>
     </interface>
-    <flack:node_info x="450" y="400" unbound="true"/>
+    <flack:node_info x="500" y="400" unbound="true"/>
   </node>
-  <node client_id="router" exclusive="false">
+  <node client_id="router1" exclusive="false">
     <sliver_type name="emulab-xen">
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
-    <interface client_id="router:inside">
-      <ip address="192.168.0.1" netmask="255.255.255.0" type="ipv4"/>
+    <interface client_id="r1:if0">
+      <ip address="10.10.13.1" netmask="255.255.255.0" type="ipv4"/>
     </interface>
-    <interface client_id="router:switch">
+    <interface client_id="r1:if1">
+      <ip address="10.10.12.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="700" y="400" unbound="true"/>
+  </node>
+  <node client_id="switch2" exclusive="false">
+    <sliver_type name="emulab-xen">
+      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-OVS"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/switch-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="s2:if0">
+      <ip address="192.168.129.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="s2:if1">
+      <ip address="192.168.128.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="900" y="400" unbound="true"/>
+  </node>
+  <node client_id="router2" exclusive="false">
+    <sliver_type name="emulab-xen">
+      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
+    </sliver_type>
+    <interface client_id="r2:if0">
+      <ip address="10.10.12.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="r2:if1">
+      <ip address="10.10.11.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="1100" y="400" unbound="true"/>
+  </node>
+  <node client_id="controller2" exclusive="false">
+    <sliver_type name="emulab-xen">
+      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="ctr2:if0">
+      <ip address="10.10.11.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="ctr2:if1">
+      <ip address="10.10.10.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="1300" y="400" unbound="true"/>
+  </node>
+  <node client_id="server" exclusive="false">
+    <sliver_type name="emulab-xen">
+      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="server:if0">
       <ip address="10.10.10.1" netmask="255.255.255.0" type="ipv4"/>
     </interface>
-    <flack:node_info x="800" y="400" unbound="true"/>
+    <flack:node_info x="1500" y="400" unbound="true"/>
   </node>
-  <node client_id="inside1" exclusive="false">
-    <sliver_type name="emulab-xen">
-      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
-    </sliver_type>
-    <interface client_id="inside1:router">
-      <ip address="192.168.0.2" netmask="255.255.255.0" type="ipv4"/>
-    </interface>
-    <flack:node_info x="1250" y="200" unbound="true"/>
-  </node>
-  <node client_id="inside2" exclusive="false">
-    <sliver_type name="emulab-xen">
-      <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
-    </sliver_type>
-    <interface client_id="inside2:router">
-      <ip address="192.168.0.3" netmask="255.255.255.0" type="ipv4"/>
-    </interface>
-    <flack:node_info x="1250" y="600" unbound="true"/>
-  </node>
-  <link client_id="outside-switch">
-    <interface_ref client_id="outside:switch"/>
-    <interface_ref client_id="switch:outside"/>
+  <link client_id="l0">
+    <interface_ref client_id="cl:if0"/>
+    <interface_ref client_id="m1:if0"/>
+    <interface_ref client_id="ctr1:if0"/>
   </link>
-  <link client_id="switch-router">
-    <interface_ref client_id="router:switch"/>
-    <interface_ref client_id="switch:router"/>
+  <link client_id="l1">
+    <interface_ref client_id="ctr1:if1"/>
+    <interface_ref client_id="s1:if0"/>
   </link>
-  <link client_id="inside-router">
-    <interface_ref client_id="inside1:router"/>
-    <interface_ref client_id="router:inside"/>
-    <interface_ref client_id="inside2:router"/>
+  <link client_id="l2">
+    <interface_ref client_id="m2:if0"/>
+    <interface_ref client_id="s1:if1"/>
+  </link>
+  <link client_id="l3">
+    <interface_ref client_id="s1:if2"/>
+    <interface_ref client_id="r1:if0"/>
+  </link>
+  <link client_id="l4">
+    <interface_ref client_id="r1:if1"/>
+    <interface_ref client_id="s2:if0"/>
+  </link>
+  <link client_id="l5">
+    <interface_ref client_id="s2:if1"/>
+    <interface_ref client_id="r2:if0"/>
+  </link>
+  <link client_id="l6">
+    <interface_ref client_id="r2:if1"/>
+    <interface_ref client_id="ctr2:if0"/>
+  </link>
+  <link client_id="l7">
+    <interface_ref client_id="ctr2:if1"/>
+    <interface_ref client_id="server:if0"/>
   </link>
 </rspec>
