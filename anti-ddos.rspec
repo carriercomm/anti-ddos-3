@@ -132,7 +132,8 @@
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
     <services>
-      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.11.1" shell="bash"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup " shell="bash"/>
+      <execute command="sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.11.1" shell="bash"/>
       <execute command="sudo sh /tmp/anti-ddos-setup/hostname.sh" shell="bash"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
     </services>
