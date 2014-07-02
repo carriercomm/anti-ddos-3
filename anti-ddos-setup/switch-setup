@@ -3,7 +3,7 @@
 cd /tmp/
 wget http://www.cs.rutgers.edu/~zhewang/anti-ddos.rb
 apt-get update
-cd /tmp/of-setup/
+cd /tmp/anti-ddos-setup/
 $PWD/prep-trema
 #$PWD/ovs-init
 $PWD/ovs-start

@@ -35,7 +35,7 @@
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
     <services>
-      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.13.1" shell="bash"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
     </services>
     <interface client_id="ctr1:if0">
@@ -50,6 +50,9 @@
     <sliver_type name="emulab-xen">
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
+    <services>
+      <execute command="sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.13.1" shell="bash"/>
+    </services>
     <interface client_id="m2:if0">
       <ip address="10.10.13.3" netmask="255.255.255.0" type="ipv4"/>
     </interface>
@@ -78,6 +81,9 @@
     <sliver_type name="emulab-xen">
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
+    <services>
+      <execute command="sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.12.1; sudo route add -net 10.10.14.0 netmask 255.255.255.0 gw 10.10.13.2" shell="bash"/>
+    </services>
     <interface client_id="r1:if0">
       <ip address="10.10.13.1" netmask="255.255.255.0" type="ipv4"/>
     </interface>
@@ -106,6 +112,9 @@
     <sliver_type name="emulab-xen">
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
+    <services>
+      <execute command="sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.11.2; sudo route add -net 10.10.14.0 netmask 255.255.255.0 gw 10.10.12.2; sudo route add -net 10.10.13.0 netmask 255.255.255.0 gw 10.10.12.2" shell="bash"/>
+    </services>
     <interface client_id="r2:if0">
       <ip address="10.10.12.1" netmask="255.255.255.0" type="ipv4"/>
     </interface>
@@ -119,7 +128,7 @@
       <disk_image name="urn:publicid:IDN+instageni.nysernet.org+image+emulab-ops:UBUNTU12-64-STD"/>
     </sliver_type>
     <services>
-      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.10.14.0 netmask 255.255.255.0 gw 10.10.11.1; sudo route add -net 10.10.13.0 netmask 255.255.255.0 gw 10.10.11.1" shell="bash"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
     </services>
     <interface client_id="ctr2:if0">
