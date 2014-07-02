@@ -1,0 +1,13 @@
+#!/bin/bash
+
+sudo apt-get update
+sudo apt-get install --yes default-jdk
+cd /tmp/
+wget http://www.moses.rutgers.edu/downloads/moses.jar
+jar xvf moses.jar
+echo export 'CLASSPATH=$CLASSPATH:/tmp/:/tmp/jinni.jar:/tmp/xerces.jar:/usr/lib/jvm/java-6-openjdk/lib/tools.jar:/tmp/moses.jar' >> /etc/profile
+source /etc/profile
+wget http://www.moses.rutgers.edu/examples/layered/SomeAgent.java
+wget http://www.moses.rutgers.edu/examples/simple/simple.java1
+javac SomeAgent.java
+
