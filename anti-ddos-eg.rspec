@@ -1,0 +1,188 @@
+<rspec type="request" generated_by="Flack" generated="2014-06-09T17:57:38Z"
+	xsi:schemaLocation="http://www.geni.net/resources/rspec/3 http://www.geni.net/resources/rspec/3/request.xsd"
+	xmlns:flack="http://www.protogeni.net/resources/rspec/ext/flack/1"
+	xmlns:client="http://www.protogeni.net/resources/rspec/ext/client/1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.geni.net/resources/rspec/3">
+  <node client_id="client" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.14.1" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="cl:if0">
+      <ip address="10.10.14.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="100" y="400" unbound="true"/>
+  </node>
+  <node client_id="malicious1" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.14.1" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="m1:if0">
+      <ip address="10.10.14.3" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="200" y="600" unbound="true"/>
+  </node>
+  <node client_id="controller1" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.13.1; echo 10.10.13.2 controller1 > /etc/hosts; echo 10.10.11.2 controller2 >> /etc/hosts" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="ctr1:if0">
+      <ip address="10.10.14.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="ctr1:if1">
+      <ip address="10.10.13.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="300" y="400" unbound="true"/>
+  </node>
+  <node client_id="malicious2" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.13.1" shell="bash"/>
+    </services>
+    <interface client_id="m2:if0">
+      <ip address="10.10.13.3" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="400" y="200" unbound="true"/>
+  </node>
+  <node client_id="switch1" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6-ovs-neuca-v1.0.3.xml" version="ef7e0b4883e23c218d19b0f22980436020c72b4d"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/switch-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="s1:if0">
+      <ip address="192.168.130.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="s1:if1">
+      <ip address="192.168.129.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="s1:if2">
+      <ip address="192.168.128.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="500" y="400" unbound="true"/>
+  </node>
+  <node client_id="router1" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.12.1; sudo route add -net 10.10.11.0 netmask 255.255.255.0 gw 10.10.12.1; sudo route add -net 10.10.14.0 netmask 255.255.255.0 gw 10.10.13.2" shell="bash"/>
+    </services>
+    <interface client_id="r1:if0">
+      <ip address="10.10.13.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="r1:if1">
+      <ip address="10.10.12.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="700" y="400" unbound="true"/>
+  </node>
+  <node client_id="switch2" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6-ovs-neuca-v1.0.3.xml" version="ef7e0b4883e23c218d19b0f22980436020c72b4d"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/switch-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="s2:if0">
+      <ip address="192.168.129.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="s2:if1">
+      <ip address="192.168.128.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="900" y="400" unbound="true"/>
+  </node>
+  <node client_id="router2" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.11.2; sudo route add -net 10.10.14.0 netmask 255.255.255.0 gw 10.10.12.2; sudo route add -net 10.10.13.0 netmask 255.255.255.0 gw 10.10.12.2" shell="bash"/>
+    </services>
+    <interface client_id="r2:if0">
+      <ip address="10.10.12.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="r2:if1">
+      <ip address="10.10.11.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="1100" y="400" unbound="true"/>
+  </node>
+  <node client_id="controller2" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.13.1; echo 10.10.13.2 controller1 > /etc/hosts; echo 10.10.11.2 controller2 >> /etc/hosts" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="ctr2:if0">
+      <ip address="10.10.11.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <interface client_id="ctr2:if1">
+      <ip address="10.10.10.2" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="1300" y="400" unbound="true"/>
+  </node>
+  <node client_id="server" exclusive="false">
+    <sliver_type name="XOMedium">
+      <disk_image name="http://geni-images.renci.org/images/standard/debian/deb6.v1.0.10.xml" version="c120b9d79d3f3882114c0e59cce14f671ef9b0db"/>
+    </sliver_type>
+    <services>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup" shell="bash"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
+    </services>
+    <interface client_id="server:if0">
+      <ip address="10.10.10.1" netmask="255.255.255.0" type="ipv4"/>
+    </interface>
+    <flack:node_info x="1500" y="400" unbound="true"/>
+  </node>
+  <link client_id="l0">
+    <interface_ref client_id="cl:if0"/>
+    <interface_ref client_id="m1:if0"/>
+    <interface_ref client_id="ctr1:if0"/>
+  </link>
+  <link client_id="l1">
+    <interface_ref client_id="ctr1:if1"/>
+    <interface_ref client_id="s1:if0"/>
+  </link>
+  <link client_id="l2">
+    <interface_ref client_id="m2:if0"/>
+    <interface_ref client_id="s1:if1"/>
+  </link>
+  <link client_id="l3">
+    <interface_ref client_id="s1:if2"/>
+    <interface_ref client_id="r1:if0"/>
+  </link>
+  <link client_id="l4">
+    <interface_ref client_id="r1:if1"/>
+    <interface_ref client_id="s2:if0"/>
+  </link>
+  <link client_id="l5">
+    <interface_ref client_id="s2:if1"/>
+    <interface_ref client_id="r2:if0"/>
+  </link>
+  <link client_id="l6">
+    <interface_ref client_id="r2:if1"/>
+    <interface_ref client_id="ctr2:if0"/>
+  </link>
+  <link client_id="l7">
+    <interface_ref client_id="ctr2:if1"/>
+    <interface_ref client_id="server:if0"/>
+  </link>
+</rspec>
