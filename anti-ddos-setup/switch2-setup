@@ -18,8 +18,8 @@ ovs-vsctl add-port OVS1 eth1
 ovs-vsctl add-br OVS2
 ovs-vsctl add-port OVS2 eth2
 
-ifconfig OVS1 10.10.13.1/24 up
-ifconfig OVS2 10.10.12.2/24 up
+ifconfig OVS1 10.10.12.1/24 up
+ifconfig OVS2 10.10.11.1/24 up
 ifconfig eth1 0
 ifconfig eth2 0
 
