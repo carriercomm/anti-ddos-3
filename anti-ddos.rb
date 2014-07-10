@@ -81,6 +81,11 @@ class MyController < Controller
 				puts "not match, so pass"
 				packet_out datapath_id, message, SendOutPort.new(out_port)
 			end
+		else
+			puts "other type of message"
+			puts message.ipv4_protocol
+			puts message.data
+			packet_out datapath_id, message, SendOutPort.new(out_port)
                 end
 
 	end
