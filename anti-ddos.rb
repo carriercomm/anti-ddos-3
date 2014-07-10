@@ -1,14 +1,10 @@
 class MyController < Controller
 	
-	Ipv4_addr = Struct.new(:ipv4_saddr, :ipv4_port)
-
 	###################
 	# read rule from configuration file
 	##################
 	def start
-		@maps = Hash.new
-		@ports = *(50000..60000)
-		@ex_ip = "10.10.11.1"
+		@rules = Hash.new
 	end
 
 	###################
@@ -54,105 +50,39 @@ class MyController < Controller
 	# else deny it (drop it)
 	######################
 	def packet_in datapath_id, message
-		#puts "msg in"
-		#puts "#{message.ipv4_saddr.to_s} to #{message.ipv4_daddr.to_s}"
-		src_match = Match.new( :nw_src => "192.168.0.0/24" )
-		dst_match = Match.new( :nw_dst => @ex_ip )
-		
-		if message.in_port == OFPP_LOCAL
-			out_port = 1
-        else
-            out_port = OFPP_LOCAL
-        end
-		
-		if message.tcp? || message.udp?
-			if src_match.compare( ExactMatch.from( message ) )
-				#puts "convert src"
-				ipv4_addr = Ipv4_addr.new(message.ipv4_saddr.to_s, message.tcp_src_port ? message.tcp_src_port : message.udp_src_port )
-				#puts "ipv4_addr"
-				#puts ipv4_addr
-				if @maps.has_key?( ipv4_addr )
-					port = @maps[ ipv4_addr ]
-					#puts "port1"
-					#puts port
-				else
-					port = @ports.pop
-					#puts "port2"
-                                        #puts port
-					@maps[ ipv4_addr ] = port
-					@maps[ port ] = ipv4_addr
-					puts "Created mapping: #{ipv4_addr.ipv4_saddr} #{ipv4_addr.ipv4_port} to #{@ex_ip} #{port}"
-				end
-				action = [
-						SetIpSrcAddr.new( @ex_ip ),
-						SetTransportSrcPort.new(port),
-						SendOutPort.new(out_port)
-					]
-				packet_out datapath_id, message, action
-				return
-			end
-			if dst_match.compare( ExactMatch.from( message ) )
-                                #puts "convert dst"
-				#puts "message.dst_port"
-				dst_port = message.tcp_dst_port ? message.tcp_dst_port : message.udp_dst_port
-				#puts dst_port
-				if @maps[ dst_port ]
-					ipv4_addr =  @maps[ dst_port ]
-					#puts "ipv4_addr"
-					#puts ipv4_addr
-				else
-					puts "Dropping msg as dst is not understood"
-					return
-				end
-				action = [
-						SetIpDstAddr.new( ipv4_addr.ipv4_saddr ),
-						SetTransportDstPort.new( ipv4_addr.ipv4_port ),
-                        SendOutPort.new(out_port)
-                                        ]
-				packet_out datapath_id, message, action
-				return
-                        end	
-		else
-			#puts "Other msg"
-			#puts message.icmpv4?
-			if src_match.compare( ExactMatch.from( message ) )
-                                #puts "convert src"
-                                icmpv4_id = message.icmpv4_id
-                                #puts "icmpv4_id"
-                                #puts icmpv4_id
-                                if !@maps.has_key?( icmpv4_id )
-                                        @maps[ icmpv4_id ] = message.ipv4_saddr.to_s
-                                end
-                                action = [
-                                                SetIpSrcAddr.new( @ex_ip ),
-                                                SendOutPort.new(out_port)
-                                        ]
-                                packet_out datapath_id, message, action
-                                return
-                        end
-                        if dst_match.compare( ExactMatch.from( message ) )
-                                #puts "convert dst"
-                                icmpv4_id = message.icmpv4_id
-                                #puts "icmpv4_id"
-                                #puts icmpv4_id
-				if @maps[ icmpv4_id ]
-                                        ipv4_addr =  @maps[ icmpv4_id ]
-                                        #puts "ipv4_addr"
-                                        #puts ipv4_addr
-                                else
-					puts "Dropping msg as dst is not understood"
-                                	return
-				end
-                                action = [
-                                                SetIpDstAddr.new( ipv4_addr ),
-                                                SendOutPort.new(out_port)
-                                        ]
-                                packet_out datapath_id, message, action
-                                return
-                        end
-		end
+		puts "msg in"
+                puts "#{message.ipv4_saddr.to_s} to #{message.ipv4_daddr.to_s}"
+                if message.in_port == OFPP_LOCAL
+                        out_port = 1
+                else
+                        out_port = OFPP_LOCAL
+                end
 
-		packet_out datapath_id, message, SendOutPort.new(out_port)
+                if message.udp?
+                        payload = message.udp_payload.split(";")
+                        dst = payload[0].split(":").last
+                        ctl = payload[1].split(":").last
+                        law = payload[2].split(":").last
+			@rules[dst] = law
+			puts "add rule: #{dst} ==> #{law}"
+			@rules[ctl] = law
+			puts "add rule: #{ctl} ==> #{law}"
+		elsif message.tcp? or message.icmpv4?
+			puts "regular"
+			if @rules.has_key?( message.ipv4_daddr.to_s )
+				puts "match"
+				if message.ipv4_saddr.to_s ==  @rules[ message.ipv4_daddr.to_s ]
+					puts "pass"
+					packet_out datapath_id, message, SendOutPort.new(out_port)
+				else
+					puts "illegal message"
+				end
+			else
+				puts "not match, so pass"
+				packet_out datapath_id, message, SendOutPort.new(out_port)
+			end
+                end
+
 	end
 
 	def packet_out(datapath_id, message, action)
@@ -161,7 +91,8 @@ class MyController < Controller
       			:in_port => message.in_port,
 			:buffer_id => 0xffffffff,
 			:data => message.data,
-      			:actions => action
+      			:zero_padding => true,
+			:actions => action
     		)
 	end
 	

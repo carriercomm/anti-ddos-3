@@ -26,7 +26,7 @@ ifconfig eth2 0
 ovs-ofctl del-flows OVS1
 ovs-ofctl del-flows OVS2
 
-ovs-vsctl set-controller OVS1 tcp:127.0.0.1:6653 ptcp:6634:127.0.0.1
+ovs-vsctl set-controller OVS2 tcp:127.0.0.1:6653 ptcp:6634:127.0.0.1
 ovs-ofctl add-flow OVS1 in_port=1,actions=output:65534
 ovs-ofctl add-flow OVS1 in_port=65534,actions=output:1
 ovs-ofctl add-flow OVS2 in_port=1,actions=output:65534
