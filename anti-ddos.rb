@@ -1,5 +1,7 @@
 class MyController < Controller
 	
+	Rule = Struct.new(:law, :msg)
+
 	###################
 	# read rule from configuration file
 	##################
@@ -63,22 +65,23 @@ class MyController < Controller
                         dst = payload[0].split(":").last
                         ctl = payload[1].split(":").last
                         law = payload[2].split(":").last
-			@rules[dst] = law
-			puts "add rule: #{dst} ==> #{law}"
-			@rules[ctl] = law
-			puts "add rule: #{ctl} ==> #{law}"
+			rule = Rule.new(law,message)
+			@rules[dst] = rule
+			puts "add rule: #{dst} ==> #{rule.law}"
+			@rules[ctl] = rule
+			puts "add rule: #{ctl} ==> #{rule.law}"
 		elsif message.tcp? or message.icmpv4?
-			puts "regular"
 			if @rules.has_key?( message.ipv4_daddr.to_s )
-				puts "match"
-				if message.ipv4_saddr.to_s ==  @rules[ message.ipv4_daddr.to_s ]
-					puts "pass"
+				puts "dst match"
+				if message.ipv4_saddr.to_s ==  @rules[ message.ipv4_daddr.to_s ].law
+					puts "src safe, so pass"
 					packet_out datapath_id, message, SendOutPort.new(out_port)
 				else
-					puts "illegal message"
+					puts "src unsafe, so drop"
+					packet_out datapath_id, @rules[ message.ipv4_daddr.to_s ].msg, SendOutPort.new(message.in_port)
 				end
 			else
-				puts "not match, so pass"
+				puts "dst not match, so pass"
 				packet_out datapath_id, message, SendOutPort.new(out_port)
 			end
 		else
