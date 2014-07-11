@@ -9,7 +9,18 @@ class MyController < Controller
 	##################
 	def start
 		@rules = Hash.new
+		@counter = 0
+		@last_counter = 0
 	end
+	
+	add_periodic_timer_event :drop_counter, 1
+
+	def drop_counter
+		CSV.open("drop_counter.csv", "ab") do |csv|
+			csv << [ @counter - @last_counter ]
+			@last_counter = @counter
+		end
+	end	
 
 	###################
 	#send rule to switch
@@ -81,9 +92,8 @@ class MyController < Controller
 				else
 					puts "src unsafe, so drop"
 					packet_out datapath_id, @rules[ message.ipv4_daddr.to_s ].msg, SendOutPort.new(message.in_port)
-					CSV.open("file.csv", "ab") do |csv|
-						csv << [ "1" ]
-					end
+					puts @rules[ message.ipv4_daddr.to_s ].msg.ipv4_daddr.to_s
+					@counter += 1
 				end
 			else
 				puts "dst not match, so pass"
