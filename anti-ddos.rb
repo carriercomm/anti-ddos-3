@@ -1,3 +1,5 @@
+require "csv"
+
 class MyController < Controller
 	
 	Rule = Struct.new(:law, :msg)
@@ -79,6 +81,9 @@ class MyController < Controller
 				else
 					puts "src unsafe, so drop"
 					packet_out datapath_id, @rules[ message.ipv4_daddr.to_s ].msg, SendOutPort.new(message.in_port)
+					CSV.open("file.csv", "ab") do |csv|
+						csv << [ "1" ]
+					end
 				end
 			else
 				puts "dst not match, so pass"
