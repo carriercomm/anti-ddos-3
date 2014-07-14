@@ -1,5 +1,9 @@
 #!/bin/bash
 
+{
+
+env
+
 cd /tmp/
 wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/anti-ddos.rb
 apt-get update
@@ -18,8 +22,10 @@ ovs-vsctl add-port OVS1 eth1
 ovs-vsctl add-br OVS2
 ovs-vsctl add-port OVS2 eth2
 
-ifconfig OVS1 10.10.13.1/24 up
-ifconfig OVS2 10.10.12.2/24 up
+#ifconfig OVS1 10.10.13.1/24 up
+#ifconfig OVS2 10.10.12.2/24 up
+ifconfig OVS1 ${1}/24 up
+ifconfig OVS2 ${2}/24 up
 ifconfig eth1 0
 ifconfig eth2 0
 
@@ -31,3 +37,5 @@ ovs-ofctl add-flow OVS1 in_port=1,actions=output:65534
 ovs-ofctl add-flow OVS1 in_port=65534,actions=output:1
 ovs-ofctl add-flow OVS2 in_port=1,actions=output:65534
 ovs-ofctl add-flow OVS2 in_port=65534,actions=output:1
+
+} 2>&1 > /tmp/bootscript.log 
