@@ -1,0 +1,61 @@
+law(simple,language(java))
+
+
+import java.util.*;
+import java.io.*;
+
+
+public class simple extends Law{
+
+
+        public void adopted(String args) {
+         System.out.println("ADOPTED ");
+         doAdd("budget(20)");
+         doImposeObligation("addBudget", 5, "sec");
+        }
+
+
+        public void disconnected() {
+         System.out.println("DISCONNECTED");
+
+	 doQuit();
+
+        }
+
+
+        public void sent(String source, String message, String dest) {
+	 System.out.println("SENT");
+
+	 int b = CS.fetchInt("budget");
+	    if(b>0) {
+		doDecr("budget", 1);
+		doForward();
+		return;
+	    }
+
+        }
+
+	public void arrived(String source, String message, String dest) {
+	 System.out.println("ARRIVED");
+
+	 doDeliver();
+
+	}
+
+	public void exception(Message m, String failurecause) {
+	 System.out.println("EXCEPTION "+m.ex_po+" "+failurecause);
+	}
+
+	public void obligationDue(Term obligationTerm) {
+
+        if (obligationTerm.toString().equals("addBudget")) {
+            doIncr("budget", 1);
+            doImposeObligation("addBudget", 5, "sec");
+            //doShowEvents("all", "all");
+        }
+    }
+
+}
+
+
+

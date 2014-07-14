@@ -9,5 +9,6 @@ echo export 'CLASSPATH=$CLASSPATH:/tmp/:/tmp/jinni.jar:/tmp/xerces.jar:/usr/lib/
 source /etc/profile
 wget http://www.moses.rutgers.edu/examples/layered/SomeAgent.java
 wget http://www.moses.rutgers.edu/examples/simple/simple.java1
+wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/anti-ddos.java1
 javac SomeAgent.java
 

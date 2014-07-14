@@ -92,7 +92,6 @@ class MyController < Controller
 				else
 					puts "src unsafe, so drop"
 					packet_out datapath_id, @rules[ message.ipv4_daddr.to_s ].msg, SendOutPort.new(message.in_port)
-					puts @rules[ message.ipv4_daddr.to_s ].msg.ipv4_daddr.to_s
 					@counter += 1
 				end
 			else
