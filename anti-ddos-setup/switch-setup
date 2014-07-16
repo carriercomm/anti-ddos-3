@@ -6,6 +6,7 @@ env
 
 cd /tmp/
 wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/anti-ddos.rb
+wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/count.rb
 apt-get update
 cd /tmp/anti-ddos-setup/
 $PWD/prep-trema

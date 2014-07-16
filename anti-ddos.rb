@@ -17,7 +17,7 @@ class MyController < Controller
 
 	def drop_counter
 		CSV.open("drop_counter.csv", "ab") do |csv|
-			csv << [ @counter - @last_counter ]
+			csv << [ `hostname`.gsub("\n",'') , @counter - @last_counter ]
 			@last_counter = @counter
 		end
 	end	
