@@ -6,9 +6,17 @@ cd /tmp/
 wget http://www.moses.rutgers.edu/downloads/moses.jar
 jar xvf moses.jar
 echo export 'CLASSPATH=$CLASSPATH:/tmp/:/tmp/jinni.jar:/tmp/xerces.jar:/usr/lib/jvm/java-6-openjdk/lib/tools.jar:/tmp/moses.jar' >> /etc/profile
+echo export 'PATH=/usr/local/bin/rubydir/bin:$PATH' >> /etc/profile
 source /etc/profile
-wget http://www.moses.rutgers.edu/examples/layered/SomeAgent.java
+wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/SomeAgent.java
+wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/SomeServer.java
 wget http://www.moses.rutgers.edu/examples/simple/simple.java1
 wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/anti-ddos.java1
+wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/count1.rb
+wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/cl.py
+wget http://www.cs.rutgers.edu/~zhewang/anti-ddos/ser.py
 javac SomeAgent.java
-
+javac SomeServer.java
+chmod +x count1.rb
+chmod +x cl.py
+chmod +x ser.py
