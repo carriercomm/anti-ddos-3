@@ -10,7 +10,7 @@
     </sliver_type>
     <services>
       <execute command="sudo sh /gimidev/gimibot.sh" shell="sh"/>
-      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.14.1" shell="sh"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0/8 gw 10.10.14.1" shell="sh"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
       <install install_path="/" url="http://emmy9.casa.umass.edu/GEC-20/gimidev.tar.gz"/>
     </services>
@@ -25,7 +25,7 @@
     </sliver_type>
     <services>
       <execute command="sudo sh /gimidev/gimibot.sh" shell="sh"/>
-      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.14.1" shell="sh"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0/8 gw 10.10.14.1" shell="sh"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
       <install install_path="/" url="http://emmy9.casa.umass.edu/GEC-20/gimidev.tar.gz"/>
     </services>
@@ -40,7 +40,7 @@
     </sliver_type>
     <services>
       <execute command="sudo sh /gimidev/gimibot.sh" shell="sh"/>
-      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.13.1" shell="sh"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0/8 gw 10.10.13.1; sudo sh /tmp/anti-ddos-setup/hostname.sh" shell="sh"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
       <install install_path="/" url="http://emmy9.casa.umass.edu/GEC-20/gimidev.tar.gz"/>
     </services>
@@ -58,7 +58,8 @@
     </sliver_type>
     <services>
       <execute command="sudo sh /gimidev/gimibot.sh" shell="sh"/>
-      <execute command="sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.13.1" shell="sh"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0/8 gw 10.10.13.1" shell="sh"/>
+      <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
       <install install_path="/" url="http://emmy9.casa.umass.edu/GEC-20/gimidev.tar.gz"/>
     </services>
     <interface client_id="m2:if0">
@@ -73,7 +74,7 @@
     <services>
       <execute command="sudo sh /gimidev/gimibot.sh" shell="sh"/>
       <execute command="sudo bash /tmp/anti-ddos-setup/switch-setup 10.10.13.1 10.10.12.2" shell="sh"/>
-      <execute command="sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.12.1; sudo route add -net 10.10.11.0 netmask 255.255.255.0 gw 10.10.12.1; sudo route add -net 10.10.14.0 netmask 255.255.255.0 gw 10.10.13.2" shell="sh"/>
+      <execute command="sudo route add -net 10.10.10.0/24 gw 10.10.12.1; sudo route add -net 10.10.11.0/24 gw 10.10.12.1; sudo route add -net 10.10.14.0/24 gw 10.10.13.2" shell="sh"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
       <install install_path="/" url="http://emmy9.casa.umass.edu/GEC-20/gimidev.tar.gz"/>
     </services>
@@ -92,7 +93,7 @@
     <services>
       <execute command="sudo sh /gimidev/gimibot.sh" shell="sh"/>
       <execute command="sudo bash /tmp/anti-ddos-setup/switch-setup 10.10.12.1 10.10.11.1" shell="sh"/>
-      <execute command="sudo route add -net 10.10.10.0 netmask 255.255.255.0 gw 10.10.11.2; sudo route add -net 10.10.14.0 netmask 255.255.255.0 gw 10.10.12.2; sudo route add -net 10.10.13.0 netmask 255.255.255.0 gw 10.10.12.2" shell="sh"/>
+      <execute command="sudo route add -net 10.10.10.0/24 gw 10.10.11.2; sudo route add -net 10.10.14.0/24 gw 10.10.12.2; sudo route add -net 10.10.13.0/24 gw 10.10.12.2" shell="sh"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
       <install install_path="/" url="http://emmy9.casa.umass.edu/GEC-20/gimidev.tar.gz"/>
     </services>
@@ -110,7 +111,7 @@
     </sliver_type>
     <services>
       <execute command="sudo sh /gimidev/gimibot.sh" shell="sh"/>
-      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0 netmask 255.0.0.0 gw 10.10.11.1" shell="sh"/>
+      <execute command="sudo bash /tmp/anti-ddos-setup/moses-setup; sudo route add -net 10.0.0.0/8 gw 10.10.11.1; sudo sh /tmp/anti-ddos-setup/hostname.sh" shell="sh"/>
       <install install_path="/tmp" url="http://www.research.rutgers.edu/~zhewang/anti-ddos/anti-ddos-setup.tar.gz"/>
       <install install_path="/" url="http://emmy9.casa.umass.edu/GEC-20/gimidev.tar.gz"/>
     </services>
