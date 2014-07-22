@@ -10,8 +10,8 @@ public class simple extends Law{
 
         public void adopted(String args) {
          System.out.println("ADOPTED ");
-         doAdd("budget(20)");
-         doImposeObligation("addBudget", 5, "sec");
+         doAdd("budget(100)");
+         doImposeObligation("addBudget", 1, "sec");
         }
 
 
@@ -27,12 +27,12 @@ public class simple extends Law{
 	 System.out.println("SENT");
 
 	 int b = CS.fetchInt("budget");
-	    if(b>0) {
+	   if(b>0) {
 		doDecr("budget", 1);
 		doForward();
 		return;
 	    }
-
+	System.out.println("No budget, drop");
         }
 
 	public void arrived(String source, String message, String dest) {
@@ -50,7 +50,7 @@ public class simple extends Law{
 
         if (obligationTerm.toString().equals("addBudget")) {
             doIncr("budget", 1);
-            doImposeObligation("addBudget", 5, "sec");
+            doImposeObligation("addBudget", 1, "sec");
             //doShowEvents("all", "all");
         }
     }

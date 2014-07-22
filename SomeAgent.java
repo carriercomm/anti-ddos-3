@@ -11,7 +11,8 @@ import moses.util.*;
 
 public class SomeAgent implements Agent{
 
-
+    public static int counter = 0;
+    public static int last = 0;
 
     public void run (String[] args) throws Exception { 
 
@@ -27,6 +28,27 @@ public class SomeAgent implements Agent{
 	String ca = null;
 	String certf = null;
 	String priv = null;
+	Timer timer = new Timer();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                        try
+                        {       FileWriter writer = new FileWriter("packet_counter.csv",true);
+                                writer.append("ma1");
+                                writer.append(',');
+                                writer.append("" + (SomeAgent.counter - SomeAgent.last));
+                                writer.append('\n');
+                                writer.flush();
+                                writer.close();
+                        }
+                        catch(IOException e)
+                        {
+                                e.printStackTrace();
+                        }
+                        SomeAgent.last = SomeAgent.counter;
+                }
+        }, 1000, 1000);
 
 
 	if(args.length < 4) {
@@ -132,7 +154,8 @@ public class SomeAgent implements Agent{
 		if(command.startsWith("sss")){
    			for(int i = 0; i < 1000; i++){
 				m.send_lg("test","s@controller2");
-				Thread.sleep(500);
+				this.counter++;
+				Thread.sleep(200);
 			}
                 }        
 	    } catch(Exception e) {
