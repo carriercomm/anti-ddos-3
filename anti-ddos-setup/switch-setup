@@ -44,4 +44,6 @@ ovs-ofctl add-flow OVS1 in_port=65534,actions=output:1
 ovs-ofctl add-flow OVS2 in_port=1,actions=output:65534
 ovs-ofctl add-flow OVS2 in_port=65534,actions=output:1
 
+/bin/bash /tmp/anti-ddos-setup/start-xorp.sh
+
 } 2>&1 > /tmp/bootscript.log 

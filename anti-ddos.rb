@@ -65,8 +65,6 @@ class MyController < Controller
 	# else deny it (drop it)
 	######################
 	def packet_in datapath_id, message
-		puts "msg in"
-                puts "#{message.ipv4_saddr.to_s} to #{message.ipv4_daddr.to_s}"
                 if message.in_port == OFPP_LOCAL
                         out_port = 1
                 else
@@ -84,6 +82,8 @@ class MyController < Controller
 			@rules[ctl] = rule
 			puts "add rule: #{ctl} ==> #{rule.law}"
 		elsif message.tcp? or message.icmpv4?
+			puts "msg in"
+                	puts "#{message.ipv4_saddr.to_s} to #{message.ipv4_daddr.to_s}"
 			if @rules.has_key?( message.ipv4_daddr.to_s )
 				puts "dst match"
 				if message.ipv4_saddr.to_s ==  @rules[ message.ipv4_daddr.to_s ].law
@@ -99,9 +99,9 @@ class MyController < Controller
 				packet_out datapath_id, message, SendOutPort.new(out_port)
 			end
 		else
-			puts "other type of message"
-			puts message.ipv4_protocol
-			puts message.data
+			#puts "other type of message"
+			#puts message.ipv4_protocol
+			#puts message.data
 			packet_out datapath_id, message, SendOutPort.new(out_port)
                 end
 
