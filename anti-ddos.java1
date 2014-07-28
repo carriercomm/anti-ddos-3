@@ -26,6 +26,30 @@ public class simple extends Law{
         public void sent(String source, String message, String dest) {
 	 System.out.println("SENT");
 
+		if(message.equals("getCS")) {
+			doDiscloseAllCS();
+			return;
+		}
+
+		if (message.equals("SYN")){
+			String synToY = "synTo(" + dest + ")";
+			if( !CS.has(synToY) ){
+				doAdd(synToY); 
+            	doForward();
+			}
+		}
+		
+		if (message.equals("ACK")){
+			String synToY = "synTo(" + dest + ")";
+			String synAckFromY = "synAckFrom(" + dest + ")";
+			
+			if( CS.has(synToY) && CS.has(synAckFromY) ){
+				doRemove(synToY); 
+				doRemove(synAckFromY); 
+           		doForward();
+           	}
+		}
+
 	 int b = CS.fetchInt("budget");
 	   if(b>0) {
 		doDecr("budget", 1);
@@ -37,6 +61,17 @@ public class simple extends Law{
 
 	public void arrived(String source, String message, String dest) {
 	 System.out.println("ARRIVED");
+
+		if (message.equals("SYN-ACK")){
+			String synToY = "synTo(" + source + ")";
+			String synAckFromY = "synAckFrom(" + source + ")";
+			if( !CS.has(synToY) ){
+				doForward(Self, "noSYN(" + Self + ")", source);
+				return;
+			}else{
+				doAdd(synAckFromY); 
+			}
+		}
 
 	 doDeliver();
 
