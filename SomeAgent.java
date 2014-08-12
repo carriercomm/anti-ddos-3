@@ -152,6 +152,7 @@ public class SomeAgent implements Agent{
 
 		}
 		if(command.startsWith("sss")){
+			Thread.sleep(10000);
    			for(int i = 0; i < 1000; i++){
 				m.send_lg("test","s@controller2");
 				this.counter++;

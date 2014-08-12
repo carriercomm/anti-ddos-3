@@ -1,0 +1,148 @@
+defProperty('resource1', "server", "ID of a resource")
+defProperty('pathfile', "/tmp/packet_counter.csv", "Path to file")
+defProperty('intervalcol',"1", "Interval to Tail")
+defProperty('resource2', "router1", "ID of a resource")
+defProperty('resource3', "router2", "ID of a resource")
+defProperty('resource4', "malicious2", "ID of a resource")
+defProperty('resource5', "controller1", "ID of a resource")
+defProperty('resource6', "controller2", "ID of a resource")
+defProperty('resource7', "client", "ID of a resource")
+
+defApplication('dropcount') do |app|
+  app.description = 'Simple Definition for the of-collect application'
+  # Define the path to the binary executable for this application
+  app.binary_path = '/tmp/count1.rb'
+  app.defProperty('target', 'Address to output file', '-f', {:type => :string})
+  app.defProperty("interval","Interval",'-i', {:type => :string})
+  app.defMeasurement('wrapper_count') do |m|
+    m.defMetric('client_id',:string)
+    m.defMetric('drop',:int64)
+  end
+end
+
+defApplication('trema') do |app|
+  app.description = 'This app runs trema from command line'
+  app.binary_path = '/bin/sh /tmp/anti-ddos-setup/trema.sh'
+end
+
+defApplication('push') do |app|
+  app.description = 'This app runs trema from command line'
+  app.binary_path = '/bin/sh /tmp/anti-ddos-setup/push.sh'
+end
+
+defApplication('ser') do |app|
+  app.description = 'This app runs trema from command line'
+  app.binary_path = '/bin/sh /tmp/anti-ddos-setup/ser.sh'
+end
+
+defApplication('cl') do |app|
+  app.description = 'This app runs trema from command line'
+  app.binary_path = '/bin/sh /tmp/anti-ddos-setup/cl.sh'
+end
+
+defApplication('server') do |app|
+  app.description = 'This app runs trema from command line'
+  app.binary_path = '/bin/bash /tmp/anti-ddos-setup/server.sh simple.java1'
+end
+
+defApplication('client') do |app|
+  app.description = 'This app runs trema from command line'
+  app.binary_path = '/bin/bash /tmp/anti-ddos-setup/client.sh sss simple.java1'
+end
+
+defApplication('ctl') do |app|
+  app.description = 'This app runs trema from command line'
+  app.binary_path = '/bin/bash /tmp/anti-ddos-setup/ctl.sh'
+end
+
+#=begin
+defGroup('Source1', property.resource1) do |node|
+  node.addApplication("dropcount") do |app|
+    app.setProperty('target', property.pathfile)
+    app.setProperty('interval', property.intervalcol)
+    app.measure('wrapper_count', :samples => 1)
+  end
+end
+#=end
+
+defGroup('Source2',
+  property.resource2,
+  property.resource3
+  ) do |node|
+  node.addApplication("trema")
+end
+
+defGroup('Source3',
+  property.resource4,
+  ) do |node|
+  node.addApplication("cl")
+end
+
+defGroup('Source4',
+  property.resource1,
+  ) do |node|
+  node.addApplication("ser")
+end
+
+defGroup('Source5', property.resource1) do |node|
+  node.addApplication("push")
+end
+
+defGroup('Source6', property.resource5, property.resource6) do |node|
+  node.addApplication("ctl")
+end
+
+defGroup('Source7', property.resource7) do |node|
+  node.addApplication("client")
+end
+
+defGroup('Source8', property.resource1) do |node|
+  node.addApplication("server")
+end
+
+onEvent(:ALL_UP_AND_INSTALLED) do |event|
+  info "Starting the trace"
+  #allGroups.startApplications
+   
+  after 1 do 
+  group('Source2').startApplications
+  end
+  
+  after 15 do 
+  group('Source6').startApplications
+  end
+  
+  after 20 do
+  group('Source4').startApplications
+  group('Source8').startApplications
+  group('Source7').startApplications
+  end
+  
+  after 25 do 
+  group('Source1').startApplications
+  end
+  
+  after 30 do 
+  group('Source3').startApplications
+  end
+  
+  after 50 do 
+  group('Source5').startApplications
+  end
+  after 8000 do
+    info "Stopping the trace"
+  allGroups.stopApplications
+  Experiment.done
+  end
+end
+
+#=begin
+defGraph 'drop_count' do |g|
+  g.ms('wrapper_count').select(:oml_seq, :drop, :client_id) 
+  g.caption "Packets at Server"
+  g.type 'line_chart3'
+  g.mapping :x_axis => :oml_seq, :y_axis => :drop, :group_by => :client_id
+  g.xaxis :legend => 'unix_ts'
+  g.yaxis :legend => 'packets per second', :ticks => {:format => 'd'}
+end
+#=end

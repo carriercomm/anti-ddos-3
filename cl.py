@@ -12,6 +12,6 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TCP_IP, TCP_PORT))
 while True:
 	s.send(MESSAGE)
-	time.sleep(1)
+	time.sleep(0.1)
 s.close()
 
